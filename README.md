@@ -8,6 +8,13 @@ I definitely did. Because of that I present you Python API that will let you kno
 ## How do i do this?
 I took [this Instagram API](https://github.com/LevPasha/Instagram-API-python) as a basis and also added my own features that use simple GET requests to make work of my custom API more quick and transparent.
 
+## Please show me how it works
+
+here it is:
+
+![InstagramUnsubsLogo](InstagramUnsubsPic.png)
+
+
 # Please notice
 My API is still in development. Some features may still be unimplemented.
 
