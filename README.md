@@ -10,9 +10,7 @@ I took [this Instagram API](https://github.com/LevPasha/Instagram-API-python) as
 
 ## Please show me how it works
 
-here it is:
-
-![InstagramUnsubsLogo](InstagramUnsubsPic.png)
+<img src="./InstagramUnsubsPic.png" width="320" height="240">
 
 
 # Please notice
