@@ -1,6 +1,6 @@
 import datetime
 from pathlib import Path
-from my_api import *
+from InstaSubsAPI import *
 
 
 def menu():
@@ -12,25 +12,30 @@ q - exit from the application""")
 
 
 # log into instagram account
-username = 'YourInstagramLogin'
-password = 'YourInstagramPassword'
-API = log_in(username, password)
+username = 'login'
+password = 'password'
+# create class instance
+account = InstaSubsAPI(username, password)
+# separate API
+API = account.API
 # get username
 user_id = API.username_id
 # create log file
 file = None
+# create username_log.txt file
 path = username + '_log.txt'
 followers_list = []
+
 if Path(path).exists():
-    print('File exists')
+    # print('File exists')
     with open(path, 'r') as file:
         for follower in file:
             followers_list.append(follower.replace('\n', ''))
 else:
-    print('Created file')
+    # print('Created file')
     file = open(path, 'w')
     # get list of followers
-    followers_list = get_total_followers(API, user_id)
+    followers_list = account.get_total_followers(API, user_id)
     # write followers list to a log file
     for i in range(len(followers_list)):
         username = followers_list[i]['username']
@@ -47,18 +52,19 @@ while 1:
         print()
         if selection == '1':
             print(datetime.datetime.now())
-            display_subs(spot_subs_difference(followers_list, API, user_id)[0])
+            account.display_subs(account.spot_subs_difference(followers_list, API, user_id)[0])
             print()
         elif selection == '2':
             print(datetime.datetime.now())
-            display_subs(spot_subs_difference(followers_list, API, user_id)[1])
+            account.display_subs(account.spot_subs_difference(followers_list, API, user_id)[1])
             print()
         elif selection == '3':
             print(datetime.datetime.now())
-            get_subscribers_column(get_total_followers(API, user_id))
+            account.get_subscribers_column(account.get_total_followers(API, user_id))
         elif selection == '4':
             print(datetime.datetime.now())
-            display_subs(sort_by_subscribers(spot_subs_difference(followers_list, API, user_id)[0]))
+            account.display_subs(account.sort_by_subscribers(account.
+                                                             spot_subs_difference(followers_list, API, user_id)[0]))
             print()
         elif selection == 'q':
             break
