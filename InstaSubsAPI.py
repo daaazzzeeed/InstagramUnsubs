@@ -1,15 +1,26 @@
 from InstagramAPI import InstagramAPI
 import requests
 import json
+import datetime
+from pathlib import Path
 
 # simply helps you to know who've unsubbed from your Instagram account
 
 
 class InstaSubsAPI(object):
     def __init__(self, login, password):
+        self.username = login
+        self.auto_checking = False
         api = InstagramAPI(login, password)
         if api.login():
             self.API = api
+            self.user_id = self.API.username_id
+            self.path_to_log = 'log.txt'
+            if not Path(self.path_to_log).exists():
+                log = open(self.path_to_log, 'w')
+                log.write('File created ' + str(datetime.datetime.now()))
+                log.write('\n')
+                log.close()
         else:
             raise Exception('Invalid login credentials')
 
@@ -91,3 +102,20 @@ class InstaSubsAPI(object):
                 print(str(i+1) + '. ' + subs_list[i])
         else:
             print(subs_list)
+
+    def auto_check(self, followers_list_before):
+        info = self.get_account_info(self.username)
+        if len(followers_list_before) != info[3]:
+            diff = self.spot_subs_difference(followers_list_before, self.API, self.user_id)
+            log = open(self.path_to_log, 'w')
+            for unsub in diff[0]:
+                log.write('[UNSUB] ' + str(datetime.datetime.now()) + ': ' + unsub)
+                log.write('\n')
+            for new_sub in diff[1]:
+                log.write('[SUB]   ' + str(datetime.datetime.now()) + ': ' + new_sub)
+                log.write('\n')
+            log.close()
+
+
+
+

@@ -1,6 +1,6 @@
 import datetime
-from pathlib import Path
 from InstaSubsAPI import *
+import threading
 
 
 def menu():
@@ -8,6 +8,8 @@ def menu():
 2 - to show new subscribed profiles
 3 - to show your subscribers
 4 - sort by subscribers number
+5 - turn on followers auto-checking
+6 - turn off followers auto-checking
 q - exit from the application""")
 
 
@@ -19,7 +21,7 @@ account = InstaSubsAPI(username, password)
 # separate API
 API = account.API
 # get username
-user_id = API.username_id
+user_id = account.user_id
 # create log file
 file = None
 # create username_log.txt file
@@ -66,6 +68,14 @@ while 1:
             account.display_subs(account.sort_by_subscribers(account.
                                                              spot_subs_difference(followers_list, API, user_id)[0]))
             print()
+        elif selection == '5' or account.auto_checking:
+            account.auto_checking = True
+            timer = threading.Timer(60, account.auto_check, [followers_list])
+            timer.start()
+            print('Auto-checking enabled\nPlease check file "log.txt" \n')
+        elif selection == '6':
+            account.auto_checking = False
+            print('Auto-checking disabled\n')
         elif selection == 'q':
             break
     except KeyboardInterrupt:
